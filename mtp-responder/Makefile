@@ -20,11 +20,11 @@ OCSRCS += mtp-responder/src/mtp_init.c mtp-responder/src/mtp_util_media_info.c \
           mtp-responder/src/mtp_usb_driver_ffs.c mtp-responder/src/mtp_descs_strings.c
 CSRCS  += $(filter-out $(OCSRCS), \
             $(wildcard mtp-responder/src/*.c))
-CSRCS  += mtp_port.c mtp_usb_driver_nuttx.c
+CSRCS  += mtp_port.c
 
 CFLAGS += -D__le16=uint16_t -D__le32=uint32_t -D__u16=uint16_t
 CFLAGS += -DMSG_STAT=IPC_STAT -DSET_USB_NONE=0 -DMTP_FFS_PATH=\"/dev/mtp\"
-CFLAGS += -DM_MMAP_THRESHOLD=0 -DM_TRIM_THRESHOLD=0 -Dfork=vfork
+CFLAGS += -DM_MMAP_THRESHOLD=0 -DM_TRIM_THRESHOLD=0
 CFLAGS += -DMTP_MAX_PATHNAME_SIZE=CONFIG_PATH_MAX -DMTP_MAX_FILENAME_SIZE=CONFIG_NAME_MAX
 CFLAGS += -DMTP_DEFAULT_MODEL_NAME=CONFIG_MTP_RESPONDER_DEVICE_NAME
 CFLAGS += -DMTP_EXTERNAL_STORAGE_DICLIST=CONFIG_MTP_RESPONDER_EXTERNAL_STORYAGE_DIRECTORY_LIST
@@ -55,15 +55,5 @@ MODULE    = $(CONFIG_MTP_RESPONDER)
 
 MAINSRC  += mtp-responder/src/mtp_init.c
 PROGNAME += mtp_responder
-
-ASRCS := $(wildcard $(ASRCS))
-CSRCS := $(wildcard $(CSRCS))
-CXXSRCS := $(wildcard $(CXXSRCS))
-MAINSRC := $(wildcard $(MAINSRC))
-NOEXPORTSRCS = $(ASRCS)$(CSRCS)$(CXXSRCS)$(MAINSRC)
-
-ifneq ($(NOEXPORTSRCS),)
-BIN := $(APPDIR)/staging/libmtp-responder.a
-endif
 
 include $(APPDIR)/Application.mk
